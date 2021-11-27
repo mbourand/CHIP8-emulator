@@ -5,6 +5,7 @@
 #include "Memory.hpp"
 #include "Display.hpp"
 #include "Keyboard.hpp"
+#include "Speaker.hpp"
 
 class CPU {
 	enum Hex : uint8_t { A = 0xA, B = 0xB, C = 0xC, D = 0xD, E = 0xE, F = 0xF };
@@ -13,6 +14,7 @@ class CPU {
 		Memory memory;
 		Display display;
         Keyboard keyboard;
+        Speaker speaker;
 
 		// 16 general purpose 8-bit registers, V0 to VF
 		// The VF register should not be used by any program, as it is used as a flag by some instructions.
@@ -35,7 +37,7 @@ class CPU {
 
         // Timers delta
         Byte timersDelta;
-        std::time_t timersLast;
+        int64_t timersLast;
 
 		std::array<Word, 16> stack;
 

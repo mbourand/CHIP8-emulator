@@ -1,11 +1,13 @@
 #include "Globals.h"
 #include "CPU.hpp"
+#include <SFML/Audio.hpp>
 
 CPU::CPU() : PC(0x200), SP(0)
 {
 	display = Display(this->memory);
     V.fill(0);
     stack.fill(0);
+    timersLast = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 void CPU::loadRom(const std::string& filename)
@@ -30,6 +32,7 @@ void CPU::loadRom(const std::string& filename)
 			std::cout << std::endl;
 		std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)memory[i] << " ";
 	}
+    std::cout << std::endl;
 }
 
 Byte CPU::fetchByte()
@@ -54,17 +57,19 @@ std::vector<Byte> CPU::readBytes(Word addr, Byte n) const
 
 void CPU::handleTimers()
 {
-	std::time_t now = std::time(nullptr);
+	auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	timersDelta += now - timersLast;
 	while (timersDelta > TIMER_RATE)
 	{
 		if (DT > 0)
 			DT--;
 		if (ST > 0)
-		{
-			std::cout << "BIP" << std::endl;
+        {
+            speaker.play();
 			ST--;
-		}
+        }
+        else
+            speaker.stop();
 		timersDelta -= TIMER_RATE;
 	}
 	timersLast = now;
@@ -77,7 +82,6 @@ void CPU::next()
 
     // Fetch opcode
     Word opcode = fetchWord();
-    //std::cout << "opcode: " << opcode << std::endl;
     if (!opcode)
         return;
     switch (opcode) {
@@ -194,7 +198,6 @@ void CPU::next()
 		V[CPU::F] = ((V[(opcode & 0x0F00) >> 8] & 0b10000000) != 0);
 		V[(opcode & 0x0F00) >> 8] <<= 1;
 	}
-
 	else if (opcode >= 0x9000 && opcode < 0xA000 && (opcode & 0xF) == 0)
 	{
 		// 9xy0 - SNE Vx, Vy
@@ -233,10 +236,7 @@ void CPU::next()
 		// Ex9E - SKP Vx
 		// Skip next instruction if key with the value of Vx is pressed.
 		if (keyboard.isKeyDown(V[(opcode & 0x0F00) >> 8]))
-		{
-			std::cout << "AAA" << std::endl;
 			PC += 2;
-		}
 	}
 	else if (opcode >= 0xE000 && opcode < 0xF000 && (opcode & 0x00FF) == 0xA1)
 	{
