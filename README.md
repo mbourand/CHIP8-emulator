@@ -1,5 +1,7 @@
 # CHIP8 Emulator
-![Chip8 Démo](https://www.github.com/mbourand/CHIP8-emulator/raw/master/readme/introduction.gif)
+<p align="center">
+    <img src="https://www.github.com/mbourand/CHIP8-emulator/raw/master/readme/introduction.gif">
+</p>
 
 ### Installation
 Choisissez la version correspondant à votre système dans les releases.
