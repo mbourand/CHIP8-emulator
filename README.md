@@ -4,7 +4,7 @@
 </p>
 
 ### Présentation
-Ce projet est un interpréteur du langage ![CHIP-8](https://fr.wikipedia.org/wiki/CHIP-8)
+Ce projet est un interpréteur du langage [CHIP-8](https://fr.wikipedia.org/wiki/CHIP-8)
 Le programme lit une ROM chip8 et interprète son contenu de manière à reproduire le comportement des machines simulées.
 
 ### Installation
