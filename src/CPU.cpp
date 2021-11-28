@@ -160,7 +160,7 @@ void CPU::next()
     {
         // 8xy3 - XOR Vx, Vy
         // Set Vx = Vx XOR Vy.
-        V[(opcode & 0x0F00) >> 8] = V[(opcode & 0x00F0) >> 4];
+        V[(opcode & 0x0F00) >> 8] ^= V[(opcode & 0x00F0) >> 4];
     }
     else if (opcode >= 0x8000 && opcode < 0x9000 && (opcode & 0xF) == 4)
     {

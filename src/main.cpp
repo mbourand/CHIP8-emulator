@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     std::cout << "ROM loaded!" << std::endl;
 
     std::cout << "Starting emulator..." << std::endl;
-    sf::RenderWindow window(sf::VideoMode(640, 320), "Chip8 Emulator");
+    sf::RenderWindow window(sf::VideoMode(640 * 2, 320 * 2), "Chip8 Emulator");
     sf::Clock cpuClock;
     while (window.isOpen())
     {
